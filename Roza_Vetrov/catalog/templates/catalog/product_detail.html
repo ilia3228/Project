@@ -1,0 +1,35 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<!--<p><strong>Manufacturer:</strong> <a href=""></a></p>-->
+<!--<p><strong>Subsection:</strong></p>-->
+<!--<p><strong>Category:</strong></p>-->
+<div class="row mt-5">
+    <div class="col-4 exmpl">
+        <img src="{{product.image}}">
+    </div>
+    <div class="col-8">
+        <p><strong>Категория: </strong>{{product.category}}</p>
+        <p><strong>Название:</strong> {{product.name}}</p>
+        <p><strong>Описание: </strong> {{product.description}}</p>
+        <p><strong>Вес: </strong> {{product.weight}} кг</p>
+        <p><strong>Стоимость: </strong> {{product.price}} тг</p>
+        <a class="btn btn-primary"><span class="white">В корзину</span></a>
+        {% if perms.catalog.staff_member_required %}
+        <a href="{% url 'product-delete' product.pk %}" class="btn btn-danger"><span class="white">Удалить</span></a>
+        <a href="{% url 'product-update' product.pk %}" class="btn btn-warning"><span class="white">Изменить</span></a>
+        {%endif%}
+    </div>
+</div>
+{% if perms.catalog.staff_member_required %}
+<div style="margin-left:20px;margin-top:20px">
+    <h4>Copies</h4>
+    {% for copy in product.productinstance_set.all %}
+    <hr>
+    <p class="text-muted"><strong>Id:</strong> {{ copy.id }}</p>
+    <p><strong>Borrower:</strong> {{ copy.borrower }}</p>
+    <p><strong>Date:</strong> {{ copy.date }}</p>
+    {% endfor %}
+</div>
+{%endif%}
+{% endblock %}

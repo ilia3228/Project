@@ -1,0 +1,36 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<!--<p><strong>Manufacturer:</strong> <a href=""></a></p>-->
+<!--<p><strong>Subsection:</strong></p>-->
+<!--<p><strong>Category:</strong></p>-->
+<div class="row mt-5">
+    <div class="col-4 exmpl">
+        <img src="{{category.image}}">
+    </div>
+    <div class="col-8">
+        <p><strong>Название:</strong> {{category.name}}</p>
+        <p><strong>Описание: </strong> {{category.description}}</p>
+        {% if perms.catalog.staff_member_required %}
+        <a href="{% url 'category-delete' category.pk %}" class="btn btn-danger"><span class="white">Удалить</span></a>
+        <a href="{% url 'category-update' category.pk %}" class="btn btn-warning"><span
+                class="white">Изменить</span></a>
+        {%endif%}
+    </div>
+</div>
+<div class="row">
+    {% for product in category.product_set.all %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{product.name}}</h5>
+            <a href=""><img src="{{product.image}}" height="200" width="220"></a>
+            <p class="card-text mt-2">{{product.description}}</p>
+            <p class="price-text">
+                <a href="{% url 'product-detail' product.pk %}" class="btn btn-primary">
+                    Посмотреть</a><span class="price">{{product.price}}тг</span>
+            </p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
